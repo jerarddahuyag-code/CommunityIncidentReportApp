@@ -1,0 +1,41 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: my_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mynet
+  minio:
+    image: minio/minio
+    container_name: my_minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      mynet:
+        aliases:
+          - minio-server
+    volumes:
+      - minio_data:/data
+    command: 
+      server /data --console-address ":9001"
+networks:
+  mynet:
+    driver: bridge
+volumes:
+  postgres_data:
+    driver: local
+  minio_data:
+    driver: local
