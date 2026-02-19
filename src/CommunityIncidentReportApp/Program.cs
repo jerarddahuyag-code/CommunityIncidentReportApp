@@ -5,6 +5,7 @@ using CommunityIncidentReportApp.Endpoints;
 using Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Minio;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -19,6 +20,18 @@ builder.Services.ConfigureAccountServices(builder.Configuration);
 builder.Services.ConfigureMediator();
 builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
     new NpgsqlDbConnectionFactory(builder.Configuration.GetConnectionString("Postgres")!));
+builder.Services.AddMinio(options =>
+{
+    //var httpClientHandler = new HttpClientHandler
+    //{
+    //    ServerCertificateCustomValidationCallback = ( message, cert, chain, errors ) => true
+    //};
+    //var httpClient = new HttpClient(httpClientHandler);
+    options.WithEndpoint(configuration["Minio:Endpoint"])
+        .WithCredentials(configuration["Minio:AccessKey"], configuration["Minio:SecretKey"])
+        //.WithHttpClient(httpClient)
+        .Build();
+});
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
