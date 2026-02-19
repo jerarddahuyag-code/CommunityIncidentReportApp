@@ -14,9 +14,9 @@ public interface IAccountService
 
     Task CreateInvitation(InviteDomain invite, CancellationToken cancellationToken);
 
-    Task<bool> CheckIfInviteIsUsed(string code, CancellationToken cancellationToken);
+    Task<InviteDomain?> GetInviteByCode(string? code, CancellationToken cancellationToken);
 
-    Task UseInvitationCode(string code, CancellationToken cancellationToken);
+    Task UseInvitationCode(string? code, CancellationToken cancellationToken);
 }
 public class AccountService(IDbConnectionFactory connectionFactory) : IAccountService
 {
@@ -65,19 +65,19 @@ public class AccountService(IDbConnectionFactory connectionFactory) : IAccountSe
             invite);
     }
 
-    public async Task<bool> CheckIfInviteIsUsed(string code, CancellationToken cancellationToken)
+    public async Task<InviteDomain?> GetInviteByCode(string? code, CancellationToken cancellationToken)
     {
         using var conn = await connectionFactory.CreateConnectionAsync(cancellationToken);
-        return await conn.QuerySingleOrDefaultAsync<bool>(
+        return await conn.QuerySingleOrDefaultAsync<InviteDomain>(
             """
-                select IsUsed from invites
+                select * from invites
                 where Code = @Code
                 limit 1
             """,
             new {Code = code});
     }
 
-    public async Task UseInvitationCode(string code, CancellationToken cancellationToken)
+    public async Task UseInvitationCode(string? code, CancellationToken cancellationToken)
     {
         using var conn = await connectionFactory.CreateConnectionAsync(cancellationToken);
         await conn.ExecuteAsync(

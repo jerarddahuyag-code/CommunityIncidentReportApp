@@ -12,7 +12,10 @@ public class LoginRequestHandler(IAccountService accountService, IAuthService au
     {
         var user = await accountService.GetUserByUsername(request.Username, cancellationToken) ?? throw new Exception("Invalid Credentials");
         var isValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
-        if (!isValid) throw new Exception("Invalid Credentials");
+        if (!isValid)
+        {
+            throw new Exception("Invalid Credentials");
+        }
 
         var claims = new List<Claim>
         {

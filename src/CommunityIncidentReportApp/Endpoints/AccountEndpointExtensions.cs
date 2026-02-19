@@ -18,7 +18,7 @@ public static class AccountEndpointExtensions
 
         group.MapPost("/register/{inviteCode}", async (IMediator mediator, RegisterUserWithInviteRequest request, string inviteCode, CancellationToken cancellationToken) =>
         {
-            var id = await mediator.Send(request, cancellationToken);
+            var id = await mediator.Send(request with { InviteCode = inviteCode}, cancellationToken);
             return TypedResults.Created("/register", id);
         });
 
