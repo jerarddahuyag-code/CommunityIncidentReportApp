@@ -12,7 +12,8 @@ public class CreateIncidentRequestHandler(IMinioClientFactory clientFactory, IFi
         string? fileUrl = null;
         if (request.MediaFile is not null) {
             var client = clientFactory.CreateClient();
-            fileUrl = await fileService.UploadFileAsync(client, request.MediaFile.OpenReadStream(), request.MediaFile.FileName, cancellationToken);
+            var fileName = Guid.NewGuid().ToString() + "_" + request.MediaFile.FileName ;
+            fileUrl = await fileService.UploadFileAsync(client, request.MediaFile.OpenReadStream(), fileName, cancellationToken);
         }
 
         var id = await incidentService.CreateIncidentAsync(new IncidentDomain

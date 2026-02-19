@@ -30,7 +30,7 @@ public static class AccountEndpointExtensions
 
         group.MapPost("/generate-invite", async (IMediator mediator, ClaimsPrincipal user, CancellationToken cancellationToken) =>
         {
-            var id = await mediator.Send(new GenerateInviteRequest { CreatedBy = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!)}, cancellationToken);
+            var id = await mediator.Send(new GenerateInviteRequest { CreatedBy = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!) }, cancellationToken);
             return TypedResults.Created("/generate-invite", id);
         }).RequireAuthorization("Inviter");
     }

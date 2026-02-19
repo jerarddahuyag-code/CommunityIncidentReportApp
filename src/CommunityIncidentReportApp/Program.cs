@@ -3,6 +3,7 @@ using Common;
 using Common.Database;
 using CommunityIncidentReportApp.Endpoints;
 using Dapper;
+using Incidents;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Minio;
@@ -17,6 +18,7 @@ var configuration = builder.Configuration;
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureAccountServices(builder.Configuration);
+builder.Services.ConfigureIncidentServices();
 builder.Services.ConfigureMediator();
 builder.Services.AddSingleton<IDbConnectionFactory>(_ =>
     new NpgsqlDbConnectionFactory(builder.Configuration.GetConnectionString("Postgres")!));
@@ -29,6 +31,7 @@ builder.Services.AddMinio(options =>
     //var httpClient = new HttpClient(httpClientHandler);
     options.WithEndpoint(configuration["Minio:Endpoint"])
         .WithCredentials(configuration["Minio:AccessKey"], configuration["Minio:SecretKey"])
+        .WithSSL(false)
         //.WithHttpClient(httpClient)
         .Build();
 });
@@ -52,7 +55,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("Inviter", policy => policy.RequireRole("Admin", "SuperAdmin"));
-
+builder.Services.AddAntiforgery();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -64,6 +67,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
 app.MapGet("/health", async (IDbConnectionFactory dbConnectionFactory) =>
 {
     using var connection = await dbConnectionFactory.CreateConnectionAsync();
@@ -75,5 +79,6 @@ app.MapGet("/health", async (IDbConnectionFactory dbConnectionFactory) =>
 })
 .WithName("HealthCheck");
 app.MapAccountEndpoints();
+app.MapIncidentEndpoints();
 
 app.Run();

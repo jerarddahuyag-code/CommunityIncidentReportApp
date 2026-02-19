@@ -14,9 +14,9 @@ public record CreateIncidentRequest : IRequest<Guid>
 
     public required IncidentCategory Category { get; init; }
 
-    public string? Latitude { get; init; }
+    public double? Latitude { get; init; }
 
-    public string? Longitude { get; init; }
+    public double? Longitude { get; init; }
 
     public IFormFile? MediaFile { get; init; }
 }

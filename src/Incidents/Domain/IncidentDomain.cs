@@ -15,9 +15,9 @@ public class IncidentDomain
 
     public required IncidentCategory Category { get; init; }
 
-    public string? Latitude { get; init; }
+    public double? Latitude { get; init; }
 
-    public string? Longitude { get; init; }
+    public double? Longitude { get; init; }
 
     public required IncidentStatus Status { get; init; }
 

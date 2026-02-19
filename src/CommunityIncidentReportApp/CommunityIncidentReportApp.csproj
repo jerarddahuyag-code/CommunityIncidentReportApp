@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Account\Account.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Incidents\Incidents.csproj" />
   </ItemGroup>
 
 </Project>
