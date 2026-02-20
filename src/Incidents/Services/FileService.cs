@@ -11,19 +11,19 @@ namespace Incidents.Services;
 
 public interface IFileService
 {
-    Task<string> UploadFileAsync(IMinioClient minioClient, Stream fileContentStream, string fileName, CancellationToken cancellationToken);
+    Task<string> UploadFileAsync(IMinioClient minioClient, Stream fileContentStream, string fileName, string contentType, CancellationToken cancellationToken);
 }
 
 public class FileService : IFileService
 {
-    public async Task<string> UploadFileAsync(IMinioClient minioClient, Stream fileContentStream, string fileName, CancellationToken cancellationToken)
+    public async Task<string> UploadFileAsync(IMinioClient minioClient, Stream fileContentStream, string fileName, string contentType, CancellationToken cancellationToken)
     {
         var args = new PutObjectArgs()
             .WithBucket("incidents")
             .WithObject(fileName)   
             .WithStreamData(fileContentStream)
             .WithObjectSize(fileContentStream.Length)
-            .WithContentType("application/octet-stream");
+            .WithContentType(contentType);
 
         await minioClient.PutObjectAsync(args, cancellationToken).ConfigureAwait(false);
 

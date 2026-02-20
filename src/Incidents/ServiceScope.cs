@@ -10,6 +10,7 @@ public static class ServiceScope
     public static IServiceCollection ConfigureIncidentServices(this IServiceCollection services)
     {
         services.AddTransient<IRequestHandler<CreateIncidentRequest, Guid>, CreateIncidentRequestHandler>();
+        services.AddTransient<IRequestHandler<GetIncidentsRequest, GetIncidentsResponse>, GetIncidentsRequestHandler>();
         services.AddTransient<IFileService, FileService>();
         services.AddTransient<IIncidentService, IncidentService>();
 

@@ -9,6 +9,8 @@ public class IncidentDomain
 
     public required Guid UserId { get; init; }
 
+    public string? DisplayName { get; set; }
+
     public required string Title { get; init; }
 
     public required string Description { get; init; }
@@ -22,6 +24,8 @@ public class IncidentDomain
     public required IncidentStatus Status { get; init; }
 
     public string? ImageUrl { get; init; }
+
+    public required DateTime CreatedAt { get; init; }
 }
 
 public enum IncidentCategory

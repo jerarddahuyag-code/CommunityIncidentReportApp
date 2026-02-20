@@ -12,8 +12,8 @@ public static class IncidentsEndpointExtensions
     {
         var group = app.MapGroup("incidents").RequireAuthorization();
 
-        group.MapPost("", async (IMediator mediator, 
-            IFormFile file,
+        group.MapPost("/", async (IMediator mediator, 
+            IFormFile? file,
             [FromForm(Name = "title")] string title,
             [FromForm(Name = "description")] string description,
             [FromForm(Name = "category")] IncidentCategory category,
@@ -23,7 +23,13 @@ public static class IncidentsEndpointExtensions
             CancellationToken cancellationToken) =>
         {
             var id = await mediator.Send(new CreateIncidentRequest { UserId = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!), Title = title, Description = description, Category = category, Latitude = latitude, Longitude = longitude, MediaFile = file }, cancellationToken);
-            return TypedResults.Created("incidents", id);
+            return TypedResults.Created($"incidents/{id}", id);
         }).DisableAntiforgery();
+
+        group.MapGet("/", async (IMediator mediator, CancellationToken cancellationToken) =>
+        {
+            var response = await mediator.Send(new GetIncidentsRequest(), cancellationToken);
+            return TypedResults.Ok(response);
+        });
     }
 }
