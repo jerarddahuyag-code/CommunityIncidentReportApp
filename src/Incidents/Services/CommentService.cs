@@ -19,7 +19,7 @@ public class CommentService(IDbConnectionFactory connectionFactory) : ICommentSe
         await conn.ExecuteAsync(
             """
                 insert into comments (Id, IncidentId, UserId, Content)
-                values (@Id, @IncidentId, @UserId, @Content
+                values (@Id, @IncidentId, @UserId, @Content)
             """, comment);
 
         return comment.Id;

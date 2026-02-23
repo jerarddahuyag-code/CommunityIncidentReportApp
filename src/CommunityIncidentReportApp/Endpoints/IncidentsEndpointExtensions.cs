@@ -32,9 +32,9 @@ public static class IncidentsEndpointExtensions
             return TypedResults.Ok(response);
         });
 
-        group.MapPost("{incidentId}/comments", async (IMediator mediator, Guid incidentId, [FromBody] string content, ClaimsPrincipal user, CancellationToken cancellationToken) =>
+        group.MapPost("{incidentId}/comments", async (IMediator mediator, Guid incidentId, CreateCommentBody body, ClaimsPrincipal user, CancellationToken cancellationToken) =>
         {
-            var commentId = await mediator.Send(new CreateCommentRequest { IncidentId = incidentId, UserId = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!), Content = content}, cancellationToken);
+            var commentId = await mediator.Send(new CreateCommentRequest { IncidentId = incidentId, UserId = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!), Content = body.Content}, cancellationToken);
             return TypedResults.Created($"{incidentId}/comments/{commentId}", commentId);
         });
 
@@ -43,5 +43,10 @@ public static class IncidentsEndpointExtensions
             var response = await mediator.Send(new GetCommentsRequest { IncidentId = incidentId }, cancellationToken);
             return TypedResults.Ok(response);
         });
+    }
+
+    private sealed record CreateCommentBody
+    {
+        public required string Content { get; init; }
     }
 }
