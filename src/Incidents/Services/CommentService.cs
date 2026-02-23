@@ -18,8 +18,8 @@ public class CommentService(IDbConnectionFactory connectionFactory) : ICommentSe
 
         await conn.ExecuteAsync(
             """
-                insert into comments (Id, IncidentId, UserId, Content)
-                values (@Id, @IncidentId, @UserId, @Content)
+                insert into comments (Id, IncidentId, UserId, Content, CreatedAt)
+                values (@Id, @IncidentId, @UserId, @Content, @CreatedAt)
             """, comment);
 
         return comment.Id;
@@ -35,6 +35,7 @@ public class CommentService(IDbConnectionFactory connectionFactory) : ICommentSe
                 from comments c
                 left join users u on c.UserId = u.Id
                 where c.IncidentId = @IncidentId
+                order by c.CreatedAt desc
             """, new { IncidentId = incidentId });
 
         return [.. comments];

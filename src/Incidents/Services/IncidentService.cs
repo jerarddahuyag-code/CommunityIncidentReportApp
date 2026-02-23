@@ -26,13 +26,14 @@ public class IncidentService(IDbConnectionFactory connectionFactory) : IIncident
             incident.Latitude,
             incident.Longitude,
             Status = incident.Status.ToString(),   
-            incident.ImageUrl
+            incident.ImageUrl,
+            incident.CreatedAt
         };
 
         await conn.ExecuteAsync(
             """
-                insert into incidents(Id, UserId, Title, Description, Category, Latitude, Longitude, Status, ImageUrl)
-                values (@Id, @UserId, @Title, @Description, @Category, @Latitude, @Longitude, @Status, @ImageUrl)
+                insert into incidents(Id, UserId, Title, Description, Category, Latitude, Longitude, Status, ImageUrl, CreatedAt)
+                values (@Id, @UserId, @Title, @Description, @Category, @Latitude, @Longitude, @Status, @ImageUrl, @CreatedAt)
             """
             , parameters);
 
