@@ -13,13 +13,13 @@ public static class AccountEndpointExtensions
         group.MapPost("/register", async (IMediator mediator, RegisterUserWithoutInviteRequest request, CancellationToken cancellationToken) =>
         {
             var id = await mediator.Send(request, cancellationToken);
-            return TypedResults.Created("/register", id);
+            return TypedResults.Created($"/register{id}", id);
         });//.RequireAuthorization("Inviter");
 
         group.MapPost("/register/{inviteCode}", async (IMediator mediator, RegisterUserWithInviteRequest request, string inviteCode, CancellationToken cancellationToken) =>
         {
             var id = await mediator.Send(request with { InviteCode = inviteCode}, cancellationToken);
-            return TypedResults.Created("/register", id);
+            return TypedResults.Created($"/register{id}", id);
         });
 
         group.MapPost("/login", async (IMediator mediator, LoginRequest request, CancellationToken cancellationToken) =>
@@ -31,7 +31,7 @@ public static class AccountEndpointExtensions
         group.MapPost("/generate-invite", async (IMediator mediator, ClaimsPrincipal user, CancellationToken cancellationToken) =>
         {
             var id = await mediator.Send(new GenerateInviteRequest { CreatedBy = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!) }, cancellationToken);
-            return TypedResults.Created("/generate-invite", id);
+            return TypedResults.Created($"/generate-invite/{id}", id);
         }).RequireAuthorization("Inviter");
     }
 }

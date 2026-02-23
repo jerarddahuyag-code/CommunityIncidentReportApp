@@ -1,6 +1,6 @@
-﻿using Common.Mediator;
+﻿using Incidents.Requests;
+using Common.Mediator;
 using Incidents.Domain;
-using Incidents.Requests;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -29,6 +29,18 @@ public static class IncidentsEndpointExtensions
         group.MapGet("/", async (IMediator mediator, CancellationToken cancellationToken) =>
         {
             var response = await mediator.Send(new GetIncidentsRequest(), cancellationToken);
+            return TypedResults.Ok(response);
+        });
+
+        group.MapPost("{incidentId}/comments", async (IMediator mediator, Guid incidentId, [FromBody] string content, ClaimsPrincipal user, CancellationToken cancellationToken) =>
+        {
+            var commentId = await mediator.Send(new CreateCommentRequest { IncidentId = incidentId, UserId = Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!), Content = content}, cancellationToken);
+            return TypedResults.Created($"{incidentId}/comments/{commentId}", commentId);
+        });
+
+        group.MapGet("{incidentId}/comments", async (IMediator mediator, Guid incidentId, CancellationToken cancellationToken) =>
+        {
+            var response = await mediator.Send(new GetCommentsRequest { IncidentId = incidentId }, cancellationToken);
             return TypedResults.Ok(response);
         });
     }

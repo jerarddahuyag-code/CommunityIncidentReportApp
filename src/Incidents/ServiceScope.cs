@@ -14,6 +14,10 @@ public static class ServiceScope
         services.AddTransient<IFileService, FileService>();
         services.AddTransient<IIncidentService, IncidentService>();
 
+        services.AddTransient<ICommentService, CommentService>();
+        services.AddTransient<IRequestHandler<GetCommentsRequest, GetCommentsResponse>, GetCommentsRequestHandler>();
+        services.AddTransient<IRequestHandler<CreateCommentRequest, Guid>, CreateCommentRequestHandler>();
+
         return services;
     }
 }
