@@ -43,10 +43,21 @@ public static class IncidentsEndpointExtensions
             var response = await mediator.Send(new GetCommentsRequest { IncidentId = incidentId }, cancellationToken);
             return TypedResults.Ok(response);
         });
+
+        group.MapPatch("/{id}", async (IMediator mediator, Guid id, UpdateIncidentStatusBody body, CancellationToken cancellationToken) =>
+        {
+            var incidentId = await mediator.Send(new UpdateIncidentStatusRequest { Id = id, NewStatus = body.Status }, cancellationToken);
+            return TypedResults.Ok(incidentId);
+        }).RequireAuthorization("Inviter");
     }
 
     private sealed record CreateCommentBody
     {
         public required string Content { get; init; }
+    }
+
+    private sealed record UpdateIncidentStatusBody
+    {
+        public required IncidentStatus Status { get; init; }
     }
 }

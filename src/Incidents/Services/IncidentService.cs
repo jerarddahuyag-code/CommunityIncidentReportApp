@@ -9,6 +9,8 @@ public interface IIncidentService
     Task<Guid> CreateIncidentAsync(IncidentDomain incident, CancellationToken cancellationToken);
 
     Task<IncidentDomain[]> GetIncidentsAsync (CancellationToken cancellationToken);
+
+    Task<Guid> UpdateIncidentStatus(Guid id, IncidentStatus status, CancellationToken cancellationToken);
 }
 public class IncidentService(IDbConnectionFactory connectionFactory) : IIncidentService
 {
@@ -55,5 +57,19 @@ public class IncidentService(IDbConnectionFactory connectionFactory) : IIncident
             );
 
         return [.. incidents];
+    }
+
+    public async Task<Guid> UpdateIncidentStatus(Guid id, IncidentStatus status, CancellationToken cancellationToken)
+    {
+        using var conn = await connectionFactory.CreateConnectionAsync(cancellationToken);
+
+        await conn.ExecuteAsync(
+            """
+                update incidents
+                set Status = @Status
+                where Id = @Id
+            """, new { Id = id, Status = status.ToString() });
+
+        return id;
     }
 }
