@@ -3,7 +3,7 @@ using Common.Mediator;
 
 namespace Account.Requests;
 
-public class RegisterUserWithInviteRequest : IRequest<Guid>
+public record RegisterUserWithInviteRequest : IRequest<Guid>
 {
     public required string Username { get; init; }
 
@@ -11,5 +11,5 @@ public class RegisterUserWithInviteRequest : IRequest<Guid>
 
     public required string DisplayName { get; init; }
 
-    public required string InviteCode { get; init; }
+    public string? InviteCode { get; init; }
 }

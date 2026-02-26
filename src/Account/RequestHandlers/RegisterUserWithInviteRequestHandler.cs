@@ -11,7 +11,8 @@ public class RegisterUserWithInviteRequestHandler(IAccountService accountService
 
     public async Task<Guid> Handle(RegisterUserWithInviteRequest request, CancellationToken cancellationToken)
     {
-        if (await accountService.CheckIfInviteIsUsed(request.InviteCode, cancellationToken))
+        var invite = await accountService.GetInviteByCode(request.InviteCode, cancellationToken) ?? throw new InvalidOperationException("Invalid invite code.");
+        if (invite.IsUsed)
         {
             throw new InvalidOperationException("Invite code is already used up.");
         }
