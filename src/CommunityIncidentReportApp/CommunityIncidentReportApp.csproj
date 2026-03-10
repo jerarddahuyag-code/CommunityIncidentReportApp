@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Account\Account.csproj" />
-    <ProjectReference Include="..\Comments\Comments.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Incidents\Incidents.csproj" />
   </ItemGroup>
