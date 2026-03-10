@@ -15,7 +15,7 @@ services:
     networks:
       - mynet
   minio:
-    image: minio/minio
+    image: quay.io/minio/minio
     container_name: my_minio
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
@@ -29,8 +29,7 @@ services:
           - minio-server
     volumes:
       - minio_data:/data
-    command: 
-      server /data --console-address ":9001"
+    command: server /data --console-address ":9001"
 networks:
   mynet:
     driver: bridge
