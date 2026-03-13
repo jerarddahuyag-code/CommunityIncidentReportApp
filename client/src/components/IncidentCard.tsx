@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import type { Incident } from "../types/incident";
 
 interface IncidentCardProps {
   incident: Incident;
+  hideCommentButton?: boolean;
 }
-export default function IncidentCard({ incident }: IncidentCardProps) {
+export default function IncidentCard({ incident, hideCommentButton = false }: IncidentCardProps) {
+  const navigate = useNavigate();
   // A helper function to color-code the status badge
   const getStatusColor = (status: string | number) => {
     // Adjust these checks based on how your C# Enum serializes (0/1/2 or "Reported"/"Resolved")
@@ -13,6 +16,10 @@ export default function IncidentCard({ incident }: IncidentCardProps) {
     return "bg-yellow-100 text-yellow-800"; // Default: Reported
   };
 
+const handleCommentClick = () => {
+    // Navigate to the details page and pass the incident object in memory
+    navigate(`/incidents/${incident.id}`, { state: { incident } });
+  };
   console.log(incident);
 
   return (
@@ -70,12 +77,16 @@ export default function IncidentCard({ incident }: IncidentCardProps) {
         </div>
       )}
 
-      {/* Card Footer: Actions */}
-      <div className="border-t border-gray-100 px-4 py-3 justify-end flex">
-        <button className="text-sm font-medium text-gray-500 hover:text-blue-600">
-          💬 View Comments
-        </button>
-      </div>
+      {!hideCommentButton && (
+        <div className="border-t border-gray-100 px-4 py-3 justify-end flex">
+          <button 
+            onClick={handleCommentClick}
+            className="text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
+          >
+            💬 Comments
+          </button>
+        </div>
+      )}
     </div>
   );
 }

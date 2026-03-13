@@ -21,8 +21,9 @@ export default function IncidentFeed() {
       } catch (error: any) {
         console.log(error);
         setErrMsg("There was an error fetching the incidents");
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     fetchIncidents();
@@ -36,7 +37,10 @@ export default function IncidentFeed() {
           <h1 className="text-2xl font-extrabold text-gray-900">
             Community Watch
           </h1>
-          <Link to="/incidents/create" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow hover:bg-blue-700">
+          <Link
+            to="/incidents/create"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow hover:bg-blue-700"
+          >
             + Report Incident
           </Link>
         </div>
