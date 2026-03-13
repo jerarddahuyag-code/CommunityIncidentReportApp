@@ -17,7 +17,7 @@ public class GetCommentsRequestHandler(ICommentService commentService) : IReques
                 Id = x.Id,
                 IncidentId = x.IncidentId,
                 UserId = x.UserId,
-                UserName = x.DisplayName ?? "Unknown",
+                Username = x.DisplayName ?? "Unknown",
                 Content = x.Content,
                 CreatedAt = x.CreatedAt,
             })]
