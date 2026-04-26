@@ -17,6 +17,8 @@ public interface IAccountService
     Task<InviteDomain?> GetInviteByCode(string? code, CancellationToken cancellationToken);
 
     Task UseInvitationCode(string? code, CancellationToken cancellationToken);
+
+    Task<UserDomain?> GetUserById(Guid userId, CancellationToken cancellationToken);
 }
 public class AccountService(IDbConnectionFactory connectionFactory) : IAccountService
 {
@@ -52,6 +54,18 @@ public class AccountService(IDbConnectionFactory connectionFactory) : IAccountSe
                 limit 1
             """,
             new {Username = username});
+    }
+
+    public async Task<UserDomain?> GetUserById(Guid userId, CancellationToken cancellationToken)
+    {
+        using var conn = await connectionFactory.CreateConnectionAsync(cancellationToken);
+        return await conn.QuerySingleOrDefaultAsync<UserDomain>(
+            """
+                select * from users
+                where Id = @Id
+                limit 1
+            """,
+            new {Id = userId});
     }
 
     public async Task CreateInvitation(InviteDomain invite, CancellationToken cancellationToken)

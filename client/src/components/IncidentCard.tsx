@@ -23,7 +23,7 @@ const handleCommentClick = () => {
   console.log(incident);
 
   return (
-    <div className="mb-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className="mb-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm max-w-2xl">
       {/* Card Header: User Info & Status */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">

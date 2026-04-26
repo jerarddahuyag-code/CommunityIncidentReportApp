@@ -53,3 +53,16 @@ CREATE TABLE IF NOT EXISTS comments (
         REFERENCES incidents(Id) 
         ON DELETE CASCADE
 );
+
+-- Refresh TOKENS
+CREATE TABLE RefreshTokens (
+    Id SERIAL PRIMARY KEY,
+    UserId UUID NOT NULL,
+    Token VARCHAR(255) NOT NULL UNIQUE,
+    ExpiresOn TIMESTAMP WITH TIME ZONE NOT NULL,
+    CreatedOn TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    RevokedOn TIMESTAMP WITH TIME ZONE NULL
+);
+
+-- Adding an index makes looking up the token super fast during the /refresh call
+CREATE INDEX IX_RefreshTokens_Token ON RefreshTokens(Token);

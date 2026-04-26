@@ -17,8 +17,10 @@ public static class ServiceScope
         services.AddTransient<IAccountService, AccountService>();
         services.AddTransient<IRequestHandler<RegisterUserWithoutInviteRequest, Guid>, RegisterUserWithoutInviteRequestHandler>();
         services.AddTransient<IRequestHandler<RegisterUserWithInviteRequest, Guid>, RegisterUserWithInviteRequestHandler>();
-        services.AddTransient<IRequestHandler<LoginRequest, string>, LoginRequestHandler>();
+        services.AddTransient<IRequestHandler<LoginRequest, LoginResponse>, LoginRequestHandler>();
         services.AddTransient<IRequestHandler<GenerateInviteRequest, string>, GenerateInviteRequestHandler>();
+        services.AddTransient<IRequestHandler<RefreshAccessTokenRequest, RefreshAccessTokenResponse?>, RefreshAccessTokenRequestHandler>();
+        services.AddTransient<IRequestHandler<LogoutRequest, bool>, LogoutRequestHandler>();
         return services;
     }
 }
