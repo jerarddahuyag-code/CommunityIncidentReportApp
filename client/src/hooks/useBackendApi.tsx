@@ -29,7 +29,7 @@ const useBackendApi = () => {
                 const prevRequest = error?.config;
                 
                 // If it's a 401 AND we haven't retried yet
-                if (error?.response?.status === 403 && !prevRequest?.sent) {
+                if (error?.response?.status === 401 && !prevRequest?.sent) {
                     prevRequest.sent = true; // Mark as retried so we don't infinite loop!
                     
                     try {
