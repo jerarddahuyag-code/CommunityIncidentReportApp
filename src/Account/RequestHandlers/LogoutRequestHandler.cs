@@ -1,6 +1,7 @@
 ﻿using Account.Requests;
 using Account.Services;
 using Common.Mediator;
+using Microsoft.AspNetCore.Http;
 
 namespace Account.RequestHandlers;
 public record LogoutRequestHandler(IAuthService authService) : IRequestHandler<LogoutRequest, bool>

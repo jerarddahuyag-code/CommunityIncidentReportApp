@@ -30,11 +30,11 @@ public static class AccountEndpointExtensions
             return TypedResults.Ok(response.AccessToken);
         });
 
-        group.MapPost("/logout", async (IMediator mediator, HttpContext context, CancellationToken cancellationToken) =>
+        group.MapPost("/logout", async (IMediator mediator, HttpRequest httpRequest, HttpResponse httpResponse, CancellationToken cancellationToken) =>
         {
-            var refreshToken = context.Request.Cookies[DefaultCookieOptions.RefreshTokenKey];
+            var refreshToken = httpRequest.Cookies[DefaultCookieOptions.RefreshTokenKey];
             await mediator.Send(new LogoutRequest { RefreshToken = refreshToken }, cancellationToken);
-            context.Response.Cookies.Delete(DefaultCookieOptions.RefreshTokenKey);
+            httpResponse.Cookies.Delete(DefaultCookieOptions.RefreshTokenKey, DefaultCookieOptions.GetDefaultCookieOpitons());
             return TypedResults.Ok();
         }).RequireAuthorization();
 

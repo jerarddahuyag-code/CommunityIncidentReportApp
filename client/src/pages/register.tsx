@@ -57,7 +57,7 @@ function Register() {
           Username: user,
           Password: pwd,
           DisplayName: displayName,
-          Role: 0, // 0 corresponds to Role.Resident in your backend Enum
+          Role: 2,
         },
         {
           headers: { "Content-Type": "application/json" },

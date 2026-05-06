@@ -8,7 +8,9 @@ export default function useLogout() {
     const logout = async () => {
         try {
             // Call your backend to revoke the token and clear the HttpOnly cookie
-            await apiPrivate.post('/accounts/logout');
+            await apiPrivate.post('/accounts/logout', {}, {
+                withCredentials: true
+            });
         } catch (err) {
             console.error("Logout failed on server", err);
         } finally {
