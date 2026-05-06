@@ -44,7 +44,7 @@ public static class IncidentsEndpointExtensions
             return TypedResults.Ok(response);
         });
 
-        group.MapPatch("/{id}", async (IMediator mediator, Guid id, UpdateIncidentStatusBody body, CancellationToken cancellationToken) =>
+        group.MapPatch("/{id}/status", async (IMediator mediator, Guid id, UpdateIncidentStatusBody body, CancellationToken cancellationToken) =>
         {
             var incidentId = await mediator.Send(new UpdateIncidentStatusRequest { Id = id, NewStatus = body.Status }, cancellationToken);
             return TypedResults.Ok(incidentId);

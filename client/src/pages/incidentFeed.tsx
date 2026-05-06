@@ -3,6 +3,7 @@ import type { Incident } from "../types/incident";
 import useBackendApi from "../hooks/useBackendApi";
 import IncidentCard from "../components/IncidentCard";
 import { Link } from "react-router-dom";
+import { useUpdateIncidentStatus } from "../hooks/useUpdateIncidentStatus";
 
 const GET_INCIDENTS_URL = "/incidents";
 
@@ -10,6 +11,7 @@ export default function IncidentFeed() {
   const [incidents, setIncidents] = useState([] as Incident[]);
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const { updateStatus } = useUpdateIncidentStatus();
   const api = useBackendApi();
 
   useEffect(() => {
@@ -28,6 +30,15 @@ export default function IncidentFeed() {
 
     fetchIncidents();
   }, [api]);
+
+  const handleStatusChange = async (incidentId: string, newStatus: string) => {
+    const success = await updateStatus(incidentId, newStatus);
+    if (success) {
+      setIncidents(prev => prev.map(inc =>
+        inc.id === incidentId ? { ...inc, status: newStatus } : inc
+      ))
+    }
+  }
 
   return (
     <div className="flex min-h-screen justify-center bg-gray-50">
@@ -72,7 +83,7 @@ export default function IncidentFeed() {
         {/* The Feed */}
         <div className="flex flex-col">
           {incidents.map((incident) => (
-            <IncidentCard key={incident.id} incident={incident} />
+            <IncidentCard key={incident.id} incident={incident} onStatusChange={handleStatusChange}/>
           ))}
         </div>
       </div>

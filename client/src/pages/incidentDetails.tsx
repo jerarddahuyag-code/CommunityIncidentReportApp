@@ -5,13 +5,14 @@ import type { Incident } from "../types/incident";
 import type { Comment as CommentType } from "../types/comment";
 import IncidentCard from "../components/IncidentCard";
 import Comment from "../components/Comment";
+import { useUpdateIncidentStatus } from "../hooks/useUpdateIncidentStatus";
 
 export default function IncidentDetails() {
   const api = useBackendApi();
   const location = useLocation();
   const navigate = useNavigate();
   
-  const incident = location.state?.incident as Incident;
+  const [incident, setIncident] = useState(location.state?.incident as Incident);
 
   const [comments, setComments] = useState<CommentType[]>([]);
   const [errMsg, setErrMsg] = useState("");
@@ -21,6 +22,8 @@ export default function IncidentDetails() {
   const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [postError, setPostError] = useState("");
+
+  const { updateStatus } = useUpdateIncidentStatus();
 
   useEffect(() => {
       if (!incident) {
@@ -46,6 +49,13 @@ export default function IncidentDetails() {
     setIsLoading(true);
     fetchComments();
   }, [api, incident]);
+
+  const handleStatusChange = async(incidentId:string, newStatus:string) => {
+    const success = await updateStatus(incidentId, newStatus)
+    if (success && incident) {
+      setIncident({...incident, status: newStatus})
+    }
+  }
 
   // The function to handle submitting a new comment
   const handlePostComment = async (e: React.SubmitEvent) => {
@@ -82,7 +92,7 @@ export default function IncidentDetails() {
             ← Back to Feed
         </button>
 
-        <IncidentCard incident={incident} hideCommentButton={true} />
+        <IncidentCard incident={incident} hideCommentButton={true} onStatusChange={handleStatusChange}/>
 
         <div className="rounded-xl border border-gray-200 bg-white shadow-sm mt-4 overflow-hidden">
             <div className="bg-gray-50 border-b border-gray-200 p-4">

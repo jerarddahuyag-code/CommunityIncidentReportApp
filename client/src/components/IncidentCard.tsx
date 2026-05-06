@@ -1,25 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import type { Incident } from "../types/incident";
+import useAuth from "../hooks/useAuth";
+import { useEffect, useState } from "react";
 
 interface IncidentCardProps {
   incident: Incident;
   hideCommentButton?: boolean;
+  onStatusChange: (id: string, newStatus: string) => void;
 }
-export default function IncidentCard({ incident, hideCommentButton = false }: IncidentCardProps) {
+export default function IncidentCard({ incident, hideCommentButton = false, onStatusChange }: IncidentCardProps) {
   const navigate = useNavigate();
-  // A helper function to color-code the status badge
+  const { auth } = useAuth()
+  const [status, setStatus] = useState(incident.status)
+
   const getStatusColor = (status: string | number) => {
-    // Adjust these checks based on how your C# Enum serializes (0/1/2 or "Reported"/"Resolved")
-    if (status === "Resolved" || status === 1)
-      return "bg-green-100 text-green-800";
+    if (status === "Resolved" || status === 1) return "bg-green-100 text-green-800";
     if (status === "Denied" || status === 2) return "bg-red-100 text-red-800";
-    return "bg-yellow-100 text-yellow-800"; // Default: Reported
+    return "bg-yellow-100 text-yellow-800";
   };
 
-const handleCommentClick = () => {
+  useEffect(() => {
+    if (status != incident.status) onStatusChange(incident.id, status);
+  }, [status])
+
+  const handleCommentClick = () => {
     // Navigate to the details page and pass the incident object in memory
     navigate(`/incidents/${incident.id}`, { state: { incident } });
   };
+
 
   return (
     <div className="mb-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm max-w-2xl">
@@ -37,11 +45,11 @@ const handleCommentClick = () => {
             </p>
             <p className="text-xs text-gray-500">
               {new Date(incident.createdAt).toLocaleDateString()}
-            </p>     
+            </p>
           </div>
         </div>
         <span>
-          <button/>
+          <button />
         </span>
       </div>
 
@@ -54,11 +62,23 @@ const handleCommentClick = () => {
             </span>
             <h3 className="text-lg font-bold text-gray-900">{incident.title}</h3>
           </div>
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(incident.status)}`}
-            >
-            {incident.status}
-          </span>
+          {(auth.role == "Admin" || auth.role == "SuperAdmin") && (
+            <select
+              id="category"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              required
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(status)}`}>
+              <option value="Reported">Reported</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Denied">Denied</option>
+            </select>
+          )}
+          {auth.role == "Resident" && (
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(incident.status)}`}>
+              {incident.status}
+            </span>)
+          }
         </div>
         <p className="text-sm text-gray-700">{incident.description}</p>
 
@@ -83,7 +103,7 @@ const handleCommentClick = () => {
 
       {!hideCommentButton && (
         <div className="border-t border-gray-100 px-4 py-3 justify-end flex">
-          <button 
+          <button
             onClick={handleCommentClick}
             className="text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
           >
@@ -92,5 +112,6 @@ const handleCommentClick = () => {
         </div>
       )}
     </div>
+
   );
 }

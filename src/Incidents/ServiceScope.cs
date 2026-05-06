@@ -17,7 +17,7 @@ public static class ServiceScope
         services.AddTransient<ICommentService, CommentService>();
         services.AddTransient<IRequestHandler<GetCommentsRequest, GetCommentsResponse>, GetCommentsRequestHandler>();
         services.AddTransient<IRequestHandler<CreateCommentRequest, Guid>, CreateCommentRequestHandler>();
-
+        services.AddTransient<IRequestHandler<UpdateIncidentStatusRequest, Guid>, UpdateIncidentStatusRequestHandler>();
         return services;
     }
 }

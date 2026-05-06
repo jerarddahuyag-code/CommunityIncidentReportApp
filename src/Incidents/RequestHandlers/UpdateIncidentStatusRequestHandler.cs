@@ -4,7 +4,7 @@ using Incidents.Services;
 
 namespace Incidents.RequestHandlers;
 
-public class UpdateIncidentRequestHandler(IIncidentService incidentService) : IRequestHandler<UpdateIncidentStatusRequest, Guid>
+public class UpdateIncidentStatusRequestHandler(IIncidentService incidentService) : IRequestHandler<UpdateIncidentStatusRequest, Guid>
 {
     public Task<Guid> Handle(UpdateIncidentStatusRequest request, CancellationToken cancellationToken)
     {

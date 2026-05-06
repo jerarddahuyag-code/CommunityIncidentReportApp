@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const useBackendApi = () => {
     const refresh = useRefreshToken();
-    const { auth, setAuth } = useAuth();
+    const { auth, setAuth, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -43,7 +43,7 @@ const useBackendApi = () => {
                         return privateApi(prevRequest);
                     } catch (refreshError) {
                         // If the refresh fails (e.g. Refresh token is expired/invalid)
-                        setAuth({}); // Clear the broken auth state
+                        logout();
                         
                         // Kick them to login, but remember where they came from
                         navigate('/login', { state: { from: location }, replace: true });
