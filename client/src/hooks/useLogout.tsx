@@ -2,10 +2,10 @@ import useAuth from './useAuth';
 import useBackendApi from './useBackendApi';
 
 export default function useLogout() {
-    const { setAuth } = useAuth();
+    const { logout } = useAuth();
     const apiPrivate = useBackendApi();
 
-    const logout = async () => {
+    const initiateLogout = async () => {
         try {
             // Call your backend to revoke the token and clear the HttpOnly cookie
             await apiPrivate.post('/accounts/logout', {}, {
@@ -15,9 +15,9 @@ export default function useLogout() {
             console.error("Logout failed on server", err);
         } finally {
             // Always clear the local React memory state, regardless of server success
-            setAuth({});
+            logout();
         }
     };
 
-    return logout;
+    return initiateLogout;
 }

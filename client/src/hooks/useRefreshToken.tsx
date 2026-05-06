@@ -6,17 +6,11 @@ export default function useRefreshToken() {
 
     const refresh = async () => {
         const response = await api.post('/accounts/refresh', {}, {
-            withCredentials: true 
+            withCredentials: true
         });
 
         const newAccessToken = response.data;
-
-        setAuth(prev => {
-            return { 
-                ...prev, 
-                accessToken: newAccessToken 
-            };
-        });
+        setAuth(newAccessToken);
         
         return newAccessToken;
     };

@@ -30,9 +30,9 @@ export default function Layout() {
                     {auth?.accessToken ? (
                         <div className="flex items-center gap-4">
                             {/* Optional: Show username if you store it in your auth state */}
-                            {auth.user && (
+                            {auth.displayName && (
                                 <span className="text-sm text-gray-500 hidden sm:block">
-                                    Welcome, <span className="font-semibold text-gray-900">{auth.user}</span>
+                                    Welcome, <span className="font-semibold text-gray-900">{auth.displayName}</span>
                                 </span>
                             )}
                             
@@ -57,7 +57,7 @@ export default function Layout() {
             
             {/* Main Content Area */}
             {/* flex-grow pushes the footer (if you add one) to the bottom, max-w-4xl keeps everything centered and readable */}
-            <main className="flex-grow w-full max-w-4xl mx-auto p-4 md:p-6 lg:p-8">
+            <main className="flex-grow w-full max-w-4xl mx-auto py-4">
                 <Outlet />
             </main>
         </div>

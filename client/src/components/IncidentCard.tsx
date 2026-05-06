@@ -20,7 +20,6 @@ const handleCommentClick = () => {
     // Navigate to the details page and pass the incident object in memory
     navigate(`/incidents/${incident.id}`, { state: { incident } });
   };
-  console.log(incident);
 
   return (
     <div className="mb-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm max-w-2xl">
@@ -41,20 +40,25 @@ const handleCommentClick = () => {
             </p>     
           </div>
         </div>
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(incident.status)}`}
-        >
-          {incident.status}
+        <span>
+          <button/>
         </span>
       </div>
 
       {/* Card Content: Text */}
       <div className="px-4 pb-3">
-        <div className="mb-2 flex items-center gap-2">
-          <span className="rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
-            {incident.category}
+        <div className="flex justify-between items-center">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
+              {incident.category}
+            </span>
+            <h3 className="text-lg font-bold text-gray-900">{incident.title}</h3>
+          </div>
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(incident.status)}`}
+            >
+            {incident.status}
           </span>
-          <h3 className="text-lg font-bold text-gray-900">{incident.title}</h3>
         </div>
         <p className="text-sm text-gray-700">{incident.description}</p>
 

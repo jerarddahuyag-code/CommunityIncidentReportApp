@@ -30,8 +30,8 @@ export default function IncidentFeed() {
   }, [api]);
 
   return (
-    <div className="flex min-h-screen justify-center bg-gray-50 py-8">
-      <div className="mx-auto min-w-2xl px-5">
+    <div className="flex min-h-screen justify-center bg-gray-50">
+      <div className="mx-auto px-5">
         {/* Feed Header */}
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-extrabold text-gray-900">

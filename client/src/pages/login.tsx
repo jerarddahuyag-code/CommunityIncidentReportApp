@@ -39,10 +39,7 @@ function Login() {
       );
 
       const accessToken = response?.data;
-      const roles = response?.data?.roles;
-      console.log(roles);
-      console.log(accessToken);
-      setAuth({ user, roles, accessToken });
+      setAuth( accessToken );
       navigate("/incidents/feed");
       setPwd("");
       setUser("");
