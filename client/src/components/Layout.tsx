@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 export default function Layout() {
     const navigate = useNavigate();
     const logout = useLogout();
-    const { auth } = useAuth(); 
+    const { auth } = useAuth();
 
     const handleLogout = async () => {
         await logout();
@@ -14,18 +14,17 @@ export default function Layout() {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
-            {/* Top Navigation Bar */}
             <nav className="bg-white shadow-sm p-4 sticky top-0 z-50">
-                <div className="max-w-4xl mx-auto flex justify-between items-center">
-                    
+                <div className="mx-auto flex justify-between items-center">
+
                     {/* App Logo/Title */}
-                    <h1 
+                    <h1
                         className="font-bold text-blue-600 text-xl cursor-pointer hover:text-blue-700 transition-colors"
                         onClick={() => navigate('/incidents/feed')}
                     >
                         Community Watch
                     </h1>
-                    
+
                     {/* Conditional Right-Side Menu */}
                     {auth?.accessToken ? (
                         <div className="flex items-center gap-4">
@@ -35,8 +34,8 @@ export default function Layout() {
                                     Welcome, <span className="font-semibold text-gray-900">{auth.displayName}</span>
                                 </span>
                             )}
-                            
-                            <button 
+
+                            <button
                                 onClick={handleLogout}
                                 className="text-sm font-medium text-gray-600 hover:text-red-600 transition-colors bg-gray-100 hover:bg-red-50 px-4 py-2 rounded-lg"
                             >
@@ -45,7 +44,7 @@ export default function Layout() {
                         </div>
                     ) : (
                         /* If they aren't logged in, maybe show a login link (useful if Layout wraps public pages) */
-                        <button 
+                        <button
                             onClick={() => navigate('/login')}
                             className="text-sm font-medium text-blue-600 hover:text-blue-800"
                         >
@@ -54,10 +53,8 @@ export default function Layout() {
                     )}
                 </div>
             </nav>
-            
-            {/* Main Content Area */}
-            {/* flex-grow pushes the footer (if you add one) to the bottom, max-w-4xl keeps everything centered and readable */}
-            <main className="flex-grow w-full max-w-4xl mx-auto py-4">
+
+            <main className="grow w-full mx-auto">
                 <Outlet />
             </main>
         </div>

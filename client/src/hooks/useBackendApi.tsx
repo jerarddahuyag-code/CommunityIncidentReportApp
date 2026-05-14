@@ -11,7 +11,6 @@ const useBackendApi = () => {
     const location = useLocation();
 
     useEffect(() => {
-        // 1. Request Interceptor: Attach the JWT to every request
         const requestIntercept = privateApi.interceptors.request.use(
             config => {
                 if (!config.headers['Authorization']) {
@@ -22,36 +21,32 @@ const useBackendApi = () => {
             error => Promise.reject(error)
         );
 
-        // 2. Response Interceptor: Catch the 401s
         const responseIntercept = privateApi.interceptors.response.use(
-            response => response, // If response is good, just return it
+            response => response,
             async (error) => {
                 const prevRequest = error?.config;
-                
-                // If it's a 401 AND we haven't retried yet
+
                 if (error?.response?.status === 401 && !prevRequest?.sent) {
-                    prevRequest.sent = true; // Mark as retried so we don't infinite loop!
-                    
+                    prevRequest.sent = true;
                     try {
-                        // Attempt to get a new token
                         const newAccessToken = await refresh();
-                        
-                        // Update the failed request with the new token
+
                         prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                        
-                        // Retry the request
+
                         return privateApi(prevRequest);
                     } catch (refreshError) {
-                        // If the refresh fails (e.g. Refresh token is expired/invalid)
                         logout();
-                        
-                        // Kick them to login, but remember where they came from
+
                         navigate('/login', { state: { from: location }, replace: true });
-                        
+
                         return Promise.reject(refreshError);
                     }
                 }
-                
+
+                const errorMessage = error.response?.data?.message || 'An unexpected network error occurred.';
+
+                window.dispatchEvent(new CustomEvent('api-error', { detail: errorMessage }));
+
                 return Promise.reject(error);
             }
         );

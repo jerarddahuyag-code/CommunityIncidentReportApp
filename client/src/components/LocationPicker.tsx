@@ -22,7 +22,6 @@ function LocationMarker({ onLocationSelect }: LocationPickerProps) {
 }
 
 export default function LocationPicker({ onLocationSelect }: LocationPickerProps) {
-  // Centered on Davao City by default
   const defaultCenter = [7.0700, 125.6000] as [number, number];
     
   const mapOptions = {

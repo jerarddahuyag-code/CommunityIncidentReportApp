@@ -129,6 +129,7 @@ export default function CreateIncident() {
                         id="file-upload"
                         type="file" 
                         accept="image/*"
+                        capture="environment"
                         onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
                         className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
                     />
