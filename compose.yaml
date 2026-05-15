@@ -30,6 +30,22 @@ services:
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
+  backend:
+    build:
+      context: .
+      dockerfile: src/CommunityIncidentReportApp/Dockerfile
+    container_name: my_api
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - database
+      - minio
+    networks:
+      - mynet
 networks:
   mynet:
     driver: bridge

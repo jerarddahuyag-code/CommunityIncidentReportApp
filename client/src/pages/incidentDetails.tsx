@@ -161,7 +161,7 @@ export default function IncidentDetails() {
         {/* Right Column: Sticky Map (Toggles on Mobile) */}
         <section 
             // Calculated height accounts for the ~76px mobile toggle bar so the map doesn't overflow
-            className={`w-full md:w-1/2 lg:w-3/5 h-[calc(100vh-76px)] md:h-screen bg-gray-200 
+            className={`w-full md:w-1/2 lg:w-3/5 max-h-[calc(100vh-76px)] h-screen bg-gray-200 
             ${mobileView === 'details' ? 'hidden md:block' : 'block'}`}
         >
              <MapFeed incidents={[incident]}/>

@@ -28,8 +28,8 @@ export default function IncidentCard({ incident, hideCommentButton = false, onSt
   };
 
   return (
-    <div className="mb-6 rounded-xl border border-gray-200 bg-white shadow-sm w-full">
-      {/* Card Header */}
+    <div className="mb-6 rounded-xl border border-gray-200 bg-white shadow-sm w-full cursor-pointer"
+    onClick={() => handleIncidentClick && handleIncidentClick(incident)}>
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <img
@@ -57,6 +57,7 @@ export default function IncidentCard({ incident, hideCommentButton = false, onSt
           {(auth.role === "Admin" || auth.role === "SuperAdmin") && (
             <select
               value={incident.status} // Controlled directly by the prop
+              onClick={(e) => e.stopPropagation()}
               onChange={handleDropdownChange}
               className={`self-start mt-1 rounded-full px-3 py-1 text-xs font-semibold focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer ${getStatusColor(incident.status)}`}
             >
@@ -91,11 +92,10 @@ export default function IncidentCard({ incident, hideCommentButton = false, onSt
         </div>
       )}
 
-      {!hideCommentButton && handleIncidentClick && (
+      {!hideCommentButton && (
         <div className="border-t border-gray-100 px-4 py-3 justify-end flex">
           <button
-            onClick={() => handleIncidentClick(incident)}
-            className="text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors"
+            className="text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors cursor-pointer"
           >
             💬 Comments
           </button>

@@ -24,8 +24,10 @@ function LocationMarker({ incident, onMarkerClick } : LocationMarkerProps) {
 }
 
 export default function MapFeed({ incidents, onMarkerClick }: MapFeedProps) {
-    const defaultCenter = [7.0700, 125.6000] as [number, number];
-
+    let defaultCenter = [7.0700, 125.6000] as [number, number];
+    if (incidents.length == 1){
+        defaultCenter = [incidents[0].latitude, incidents[0].longitude] as [number, number]
+    }
     const mapOptions = {
         center: defaultCenter,
         zoom: 13,
