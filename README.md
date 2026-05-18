@@ -32,6 +32,7 @@ Unlike generic neighborhood social media groups that can become cluttered, Commu
     ```
 2.  **Set up Environment Variables**
     At the root folder, create a .env file with the following keys (Provide your own values):
+    ```txt
     POSTGRES_USER=
     POSTGRES_PASSWORD=
     POSTGRES_DB=
@@ -45,13 +46,13 @@ Unlike generic neighborhood social media groups that can become cluttered, Commu
     Minio__Endpoint=
     Minio__AccessKey=
     Minio__SecretKey=
-
-3.  **Start Infrastructure**
+    ```
+4.  **Start Infrastructure**
     Run the local PostgreSQL database, MinIO storage, and Backend API containers.
     ```bash
     docker-compose up -d
 
-4.  **Run the Frontend**
+5.  **Run the Frontend**
     Navigate to the frontend project, install dependencies, and start the Vite development server.
     ```bash
     cd ../client
