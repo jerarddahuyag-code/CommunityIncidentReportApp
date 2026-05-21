@@ -47,6 +47,12 @@ Unlike generic neighborhood social media groups that can become cluttered, Commu
     Minio__AccessKey=
     Minio__SecretKey=
     ```
+3. **Setup Minio**
+    Log in to Minio at localhost:9001 using the credentials you have created in the .env file.
+    Create a bucket named "Incidents"
+    Create a policy.json file inside the repository and apply it to the Minio Bucket.
+    Docs: [Minio Policies](https://docs.min.io/aistor/administration/iam/access/#:~:text=%7B-,%22Version%22%20%3A%20%222012%2D10%2D17%22%2C,%7D,-For%20the%20Statement)
+     
 4.  **Start Infrastructure**
     Run the local PostgreSQL database, MinIO storage, and Backend API containers.
     ```bash
