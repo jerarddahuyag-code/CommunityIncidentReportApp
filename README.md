@@ -27,7 +27,7 @@ Unlike generic neighborhood social media groups that can become cluttered, Commu
 
 1.  **Clone the repository**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/jerarddahuyag-code/CommunityIncidentReportApp.git
     cd CommunityWatch
     ```
 2.  **Set up Environment Variables**
